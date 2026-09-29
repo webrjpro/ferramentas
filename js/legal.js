@@ -3,13 +3,13 @@
   "use strict";
 
   const acceptanceKey = "ferramentas-locais-termos-2026-09-25";
+  const termsUrl = new URL("../paginas/termos.html", document.currentScript.src);
   try {
     if (await window.AppPreferences.get(acceptanceKey) === "aceito") return;
   } catch (_error) {
     // A ferramenta continua disponível mesmo quando o navegador bloqueia IndexedDB.
   }
 
-  const termsUrl = new URL("../paginas/termos.html", document.currentScript.src);
   const overlay = document.createElement("div");
   overlay.className = "legal-overlay";
   overlay.innerHTML = `

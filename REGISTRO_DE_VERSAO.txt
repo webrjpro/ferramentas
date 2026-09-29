@@ -58,7 +58,7 @@ js/gerador-presenca.js
 071ace1af41a14041337cce3e7e1328530503d46d2d937df75db3f9a52e1d4ee
 
 js/legal.js
-df02b8e9677762bd0d69bf4c1aedef20d1a64cebc837489fe43a9bd3aae9b5ef
+afed29cc3825dc25ffcd6dc19bd78915ce93117fc415b5c9d3c2fdb835106659
 
 js/preferences.js
 b79e5ad3d4dbfc58b8c53afd24923c14808d1bf0cdc8e37736d3411ad1de3bd6
