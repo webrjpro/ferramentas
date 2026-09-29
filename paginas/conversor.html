@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR" data-page="conversor">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08111f" />
+    <meta name="author" content="Carlos Antonio de Oliveira Piquet" />
+    <meta name="copyright" content="Copyright 2026 Carlos Antonio de Oliveira Piquet" />
+    <title>Ferramentas locais - Planilha para CSV</title>
+    <link rel="stylesheet" href="../css/conversor.css" />
+    <link rel="stylesheet" href="../css/legal.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
+    <script src="../js/preferences.js"></script>
+    <script src="../js/theme.js"></script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="tool-header">
+        <div class="topbar">
+          <a class="brand" href="../index.html" aria-label="Pagina inicial">
+            <span class="brand-mark">FL</span> Ferramentas locais
+          </a>
+          <nav class="tools-nav" aria-label="Ferramentas">
+            <a href="../index.html">Comprimir PDF</a>
+            <a class="active" href="./conversor.html" aria-current="page">Planilha para CSV</a>
+          </nav>
+        </div>
+
+        <div class="compact-intro">
+          <div>
+            <h1>Converter planilha para CSV</h1>
+            <p>Selecione o arquivo, confira as colunas e baixe o CSV.</p>
+          </div>
+          <span class="local-badge">XLSX, XLS e CSV</span>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <section class="stage" aria-labelledby="import-title">
+          <div class="stage-heading">
+            <div class="stage-number">01</div>
+            <div>
+              <h2 id="import-title">Importar planilha</h2>
+            </div>
+          </div>
+
+          <label id="drop-zone" class="drop-zone" for="file-input">
+            <input id="file-input" type="file" accept=".xlsx,.xls,.csv" />
+            <span class="upload-mark" aria-hidden="true">&#8593;</span>
+            <span class="drop-copy">
+              <strong>Arraste a planilha aqui</strong>
+              <small>ou clique para escolher um arquivo</small>
+            </span>
+            <span class="privacy-note">XLSX / XLS / CSV</span>
+          </label>
+
+          <div id="file-summary" class="file-summary hidden" aria-live="polite">
+            <div class="file-identity">
+              <span class="file-type" aria-hidden="true">XLS</span>
+              <div><strong id="file-name"></strong><small id="file-size"></small></div>
+            </div>
+            <button id="remove-file" class="icon-btn" type="button" aria-label="Remover arquivo">&#215;</button>
+          </div>
+
+          <label id="sheet-field" class="sheet-field hidden" for="sheet-select">
+            <span>Aba da planilha</span>
+            <select id="sheet-select"></select>
+          </label>
+        </section>
+
+        <section id="mapping-stage" class="stage hidden" aria-labelledby="mapping-title">
+          <div class="stage-heading with-summary">
+            <div class="stage-title-group">
+              <div class="stage-number">02</div>
+              <div>
+                <p class="stage-kicker">ESTRUTURA DOS DADOS</p>
+                <h2 id="mapping-title">Escolher campos</h2>
+              </div>
+            </div>
+            <div id="source-stats" class="source-stats"></div>
+          </div>
+
+          <p class="stage-description">Confira nome, matrícula e turma. Escolha abaixo os outros campos que devem entrar no CSV.</p>
+
+          <h3 class="selection-title">Campos obrigatórios</h3>
+          <div id="mapping-grid" class="mapping-grid"></div>
+          <div class="selection-heading">
+            <h3 class="selection-title">Outros campos</h3>
+            <div class="selection-actions">
+              <button id="select-all-fields" type="button">Selecionar todos</button>
+              <button id="clear-fields" type="button">Limpar seleção</button>
+            </div>
+          </div>
+          <div id="field-selection" class="field-selection" role="group" aria-label="Campos opcionais para importar"></div>
+          <details id="mapping-details" class="mapping-details">
+            <summary>Ajustar correspondência das colunas</summary>
+            <p>Use esta opção se alguma coluna foi identificada incorretamente.</p>
+            <div id="optional-mapping-grid" class="mapping-grid"></div>
+          </details>
+          <p id="mapping-message" class="validation-message" aria-live="polite"></p>
+          <div class="stage-actions">
+            <button id="convert-btn" class="primary-btn" type="button">
+              <span>Converter dados</span><span aria-hidden="true">&#8594;</span>
+            </button>
+          </div>
+        </section>
+
+        <section id="source-preview-stage" class="stage hidden" aria-labelledby="source-preview-title">
+          <div class="preview-heading">
+            <div>
+              <p class="stage-kicker">PREVIA DA ORIGEM</p>
+              <h2 id="source-preview-title">Dados importados</h2>
+            </div>
+            <span id="source-preview-note" class="preview-note"></span>
+          </div>
+          <div id="source-table" class="data-table" tabindex="0" aria-label="Previa dos dados importados"></div>
+        </section>
+
+        <section id="result-stage" class="stage result-stage hidden" aria-labelledby="result-title">
+          <div class="result-topline">
+            <div class="success-mark" aria-hidden="true">&#10003;</div>
+            <div>
+              <p class="stage-kicker">CONVERSAO CONCLUIDA</p>
+              <h2 id="result-title">Arquivos prontos</h2>
+              <p id="result-summary" class="result-summary"></p>
+            </div>
+          </div>
+
+          <div id="result-table" class="data-table" tabindex="0" aria-label="Previa dos dados convertidos"></div>
+
+          <div class="download-grid">
+            <button id="download-moodle" class="download-card primary-download" type="button">
+              <span class="download-icon" aria-hidden="true">&#8595;</span>
+              <span><strong>Baixar CSV para Moodle</strong><small>Campos transformados e separados por ponto e virgula</small></span>
+            </button>
+            <button id="download-full" class="download-card" type="button">
+              <span class="download-icon" aria-hidden="true">&#8595;</span>
+              <span><strong>Baixar CSV completo</strong><small>Todos os dados da aba selecionada</small></span>
+            </button>
+          </div>
+        </section>
+      </section>
+
+      <footer>
+        <span>&copy; 2026 Carlos Antonio de Oliveira Piquet. Todos os direitos reservados.</span>
+        <span class="footer-links">
+          <span>Desenvolvido por Carlos Antonio de Oliveira Piquet</span>
+          <a href="./termos.html">Termos de Uso e Licenca</a>
+        </span>
+      </footer>
+    </main>
+
+    <div id="notifications" class="notifications" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+    <script src="../js/core/conversor.js" defer></script>
+    <script src="../js/conversor.js" defer></script>
+    <script src="../js/legal.js" defer></script>
+  </body>
+</html>

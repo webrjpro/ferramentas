@@ -1,0 +1,120 @@
+/* Tema compartilhado por todas as ferramentas. A preferência é guardada em IndexedDB. */
+html[data-theme="light"] { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+
+.theme-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 900;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink, var(--text));
+  background: var(--panel);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .18);
+  cursor: pointer;
+  font: 700 .82rem/1.2 Arial, sans-serif;
+}
+.theme-toggle:hover { border-color: var(--accent, var(--blue)); }
+.theme-toggle:focus-visible { outline: 3px solid var(--accent, var(--focus)); outline-offset: 3px; }
+.theme-toggle--inline {
+  position: static;
+  min-height: 42px;
+  border-radius: 10px;
+  background: var(--panel-2, var(--panel));
+  box-shadow: none;
+  white-space: nowrap;
+}
+
+html[data-theme="light"]:not([data-page="presenca"]) {
+  --ink: #172638;
+  --muted: #526579;
+  --muted-strong: #35485d;
+  --page: #f3f7fb;
+  --panel: #fff;
+  --panel-2: #f1f6fa;
+  --panel-3: #eaf1f7;
+  --line: #cedae5;
+  --line-strong: #a9bdcf;
+  --accent: #087750;
+  --accent-dark: #fff;
+  --warning: #85580a;
+  --danger: #a52727;
+}
+html[data-theme="light"]:not([data-page="presenca"]) body {
+  background: radial-gradient(circle at 85% 5%, rgba(8,119,80,.06), transparent 25rem), var(--page);
+}
+html[data-theme="light"] .workspace,
+html[data-theme="light"] .suite-workspace,
+html[data-theme="light"] .format-card,
+html[data-theme="light"] .notification { background: var(--panel); }
+html[data-theme="light"] .data-table th { background: var(--panel-2); }
+html[data-theme="light"] .progress-track { background: var(--panel-3); }
+html[data-theme="light"] .primary-btn { color: #fff; }
+html[data-theme="light"] input[type="number"],
+html[data-theme="light"] select { background: var(--panel); }
+html[data-theme="light"] .pdf-stage { background: #e6edf3; }
+html[data-theme="light"] .badge.ok,
+html[data-theme="light"] .tools-nav a.active,
+html[data-theme="light"] .suite-nav a.active,
+html[data-theme="light"] .mode-tab.active,
+html[data-theme="light"] .required-tag { color: var(--accent); }
+html[data-theme="light"] .tag { background: var(--panel-3); }
+
+html[data-theme="light"] .legal-overlay { background: rgba(23,38,56,.45); }
+html[data-theme="light"] .legal-dialog {
+  border-color: #c9d8e5;
+  color: #172638;
+  background: #fff;
+  box-shadow: 0 28px 80px rgba(23,38,56,.2);
+}
+html[data-theme="light"] .legal-dialog p { color: #526579; }
+html[data-theme="light"] .legal-dialog strong { color: #172638; }
+html[data-theme="light"] .legal-actions a { border-color: #a9bdcf; color: #172638; }
+html[data-theme="light"] .legal-actions button { border-color: #087750; color: #fff; background: #087750; }
+
+html[data-page="presenca"][data-theme="dark"] {
+  --bg: #08111f;
+  --panel: #0d1828;
+  --panel-soft: #111f32;
+  --text: #f5f7fb;
+  --muted: #adbed0;
+  --line: #34475d;
+  --blue: #85caff;
+  --blue-strong: #aad9ff;
+  --green: #237455;
+  --red: #b33b32;
+  --amber: #a56a12;
+  --focus: #85caff;
+  --shadow: 0 10px 28px rgba(0,0,0,.25);
+}
+html[data-page="presenca"][data-theme="dark"] .topbar { background: rgba(13,24,40,.95); }
+html[data-page="presenca"][data-theme="dark"] .btn.primary { background: #075d92; color: #fff; }
+html[data-page="presenca"][data-theme="dark"] .btn.primary:hover:not(:disabled) { background: #024a75; }
+html[data-page="presenca"][data-theme="dark"] input,
+html[data-page="presenca"][data-theme="dark"] select,
+html[data-page="presenca"][data-theme="dark"] .btn.secondary,
+html[data-page="presenca"][data-theme="dark"] .metric,
+html[data-page="presenca"][data-theme="dark"] .search-field,
+html[data-page="presenca"][data-theme="dark"] .segmented,
+html[data-page="presenca"][data-theme="dark"] td { border-color: var(--line); color: var(--text); background: var(--panel); }
+html[data-page="presenca"][data-theme="dark"] .search-field input { background: transparent; }
+html[data-page="presenca"][data-theme="dark"] .drop-zone { border-color: var(--line); background: var(--panel-soft); }
+html[data-page="presenca"][data-theme="dark"] .drop-zone.drag-over,
+html[data-page="presenca"][data-theme="dark"] .module-row.active td { background: #123249; }
+html[data-page="presenca"][data-theme="dark"] .btn.secondary:hover,
+html[data-page="presenca"][data-theme="dark"] .segmented button:hover,
+html[data-page="presenca"][data-theme="dark"] tbody tr:hover td { background: var(--panel-soft); }
+html[data-page="presenca"][data-theme="dark"] th { border-color: var(--line); color: var(--text); background: var(--panel-soft); }
+html[data-page="presenca"][data-theme="dark"] .segmented button { border-color: var(--line); }
+html[data-page="presenca"][data-theme="dark"] .module-row.active:hover td { background: #123249; }
+html[data-page="presenca"][data-theme="dark"] .home-mark { border-color: #2f6954; color: #9de5bd; background: #113329; }
+html[data-page="presenca"][data-theme="dark"] .warnings-box.has-warnings { color: #ffe0a0; background: #3b2d12; }
+
+@media (max-width: 600px) {
+  .theme-toggle { right: 12px; bottom: 12px; min-height: 40px; padding: 0 12px; }
+  body { padding-bottom: 55px; }
+  .home-page { padding-bottom: 0; }
+}

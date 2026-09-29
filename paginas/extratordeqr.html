@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR" data-page="extratordeqr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07101c" />
+    <meta name="author" content="Carlos Antonio de Oliveira Piquet" />
+    <meta name="copyright" content="Copyright 2026 Carlos Antonio de Oliveira Piquet" />
+    <title>PDF e QR | Ferramentas locais</title>
+    <link rel="stylesheet" href="../css/tools-suite.css" />
+    <link rel="stylesheet" href="../css/legal.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
+    <script src="../js/preferences.js"></script>
+    <script src="../js/theme.js"></script>
+  </head>
+  <body>
+    <main class="suite-shell">
+      <header class="suite-header">
+        <div class="suite-topbar">
+          <a class="suite-brand" href="../index.html" aria-label="Página inicial"><span class="suite-brand-mark">FL</span> Ferramentas locais</a>
+          <nav class="suite-nav" aria-label="Ferramentas">
+            <a href="../index.html">Início</a><a href="./docalunos.html">Documentos</a><a class="active" href="./extratordeqr.html" aria-current="page">PDF e QR</a>
+          </nav>
+        </div>
+        <div class="suite-intro"><div><h1>PDF e QR, sem improviso</h1><p>Insira ou extraia códigos com conferência antes do download.</p></div><span class="suite-badge">Tudo processado neste navegador</span></div>
+      </header>
+
+      <section class="suite-workspace" aria-labelledby="operation-title">
+        <section class="tool-stage">
+          <div class="stage-head"><div class="stage-title"><span class="step-number">01</span><div><p class="stage-kicker">OPERAÇÃO</p><h2 id="operation-title">O que você precisa fazer?</h2></div></div></div>
+          <div class="mode-tabs" role="tablist" aria-label="Operação com PDF e QR">
+            <button class="mode-tab active" type="button" role="tab" aria-selected="true" data-mode="single">Inserir em um PDF</button>
+            <button class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="batch">Inserir em lote</button>
+            <button class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="extract">Extrair dos PDFs</button>
+          </div>
+        </section>
+
+        <section id="single-panel" class="tool-stage mode-panel">
+          <div class="stage-head"><div class="stage-title"><span class="step-number">02</span><div><p class="stage-kicker">ARQUIVOS</p><h2>PDF e imagem do QR</h2></div></div></div>
+          <div class="two-columns">
+            <div class="file-card"><h3>Certificado em PDF</h3><label for="single-pdf">Selecionar certificado<input id="single-pdf" type="file" accept=".pdf,application/pdf" /></label><p id="single-pdf-summary" class="file-summary">Nenhum arquivo</p></div>
+            <div class="file-card"><h3>PDF que contém o QR</h3><button id="open-qr-modal" class="secondary-btn full-width" type="button">Extrair QR de um PDF</button><p id="single-qr-summary" class="file-summary">Nenhum PDF analisado</p></div>
+          </div>
+          <div id="single-editor" class="viewer-layout hidden">
+            <div class="pdf-stage" id="pdf-stage"><div class="pdf-page-wrap" id="pdf-page-wrap"><canvas id="pdf-canvas"></canvas><div id="qr-placement" class="qr-placement hidden" aria-label="Posição do QR Code"><img id="qr-preview" alt="Prévia do QR Code" /><span class="resize-handle" aria-hidden="true"></span></div></div></div>
+            <aside class="side-panel">
+              <div class="control-block"><h3>Página</h3><div class="page-nav"><button id="previous-page" type="button" aria-label="Página anterior">←</button><span id="page-counter">1 de 1</span><button id="next-page" type="button" aria-label="Próxima página">→</button></div></div>
+              <div class="control-block"><h3>Posição nesta página</h3><button id="place-qr" class="primary-btn full-width" type="button">Adicionar QR</button><button id="remove-qr" class="danger-btn full-width hidden" type="button">Remover desta página</button><p class="stage-help">Arraste para mover. Use o ponto verde para redimensionar.</p></div>
+              <div class="control-block"><h3>Finalizar</h3><p id="placement-summary" class="file-summary">Nenhuma página configurada</p><button id="save-single" class="primary-btn full-width" type="button" disabled>Baixar PDF</button></div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="batch-panel" class="tool-stage mode-panel hidden">
+          <div class="stage-head"><div class="stage-title"><span class="step-number">02</span><div><p class="stage-kicker">LOTE</p><h2>Parear PDFs e QRs</h2></div></div></div>
+          <p class="stage-help">Selecione até 300 certificados e os PDFs que contêm os QRs. O sistema lê cada página, identifica o campo Aluno e mostra o casamento antes de gerar.</p>
+          <div class="two-columns">
+            <div class="file-card"><h3>Certificados em PDF</h3><label for="batch-pdfs">Selecionar os certificados<input id="batch-pdfs" type="file" accept=".pdf,application/pdf" multiple /></label><p id="batch-pdfs-summary" class="file-summary">Nenhum arquivo</p></div>
+            <div class="file-card"><h3>PDFs com QR Code</h3><label for="batch-qrs">Selecionar os PDFs de QR<input id="batch-qrs" type="file" accept=".pdf,application/pdf" multiple /></label><p id="batch-qrs-summary" class="file-summary">Nenhum arquivo</p></div>
+          </div>
+          <div class="qr-settings">
+            <label>Página<input id="batch-page" type="number" min="1" value="1" /></label>
+          </div>
+          <div id="batch-report" class="report-list hidden" aria-live="polite"></div>
+          <div id="batch-issue" class="issue-box">Selecione os dois conjuntos para iniciar a leitura.</div>
+          <div class="button-row"><button id="analyze-batch" class="secondary-btn" type="button" disabled>Ler QRs e conferir nomes</button><button id="configure-batch" class="secondary-btn" type="button" disabled>Posicionar no primeiro PDF</button><button id="run-batch" class="primary-btn" type="button" disabled>Gerar lote em ZIP</button></div>
+        </section>
+
+        <section id="extract-panel" class="tool-stage mode-panel hidden">
+          <div class="stage-head"><div class="stage-title"><span class="step-number">02</span><div><p class="stage-kicker">EXTRAÇÃO</p><h2>Localizar QRs nos PDFs</h2></div></div></div>
+          <label class="drop-field" for="extract-pdfs"><input id="extract-pdfs" type="file" accept=".pdf,application/pdf" multiple /><span class="drop-icon">+</span><span class="drop-copy"><strong>Selecionar PDFs</strong><span>O leitor examina todas as páginas</span></span><span class="drop-type">PDF</span></label>
+          <p id="extract-summary" class="file-summary">Nenhum arquivo</p>
+          <div class="button-row"><button id="run-extract" class="primary-btn" type="button" disabled>Extrair QRs em ZIP</button></div>
+        </section>
+
+        <section id="job-progress" class="tool-stage hidden" aria-live="polite">
+          <div class="progress-line"><strong id="job-status">Preparando…</strong><span id="job-percent">0%</span></div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="job-bar" class="progress-bar"></span></div>
+          <div class="button-row"><button id="cancel-job" class="secondary-btn" type="button">Cancelar</button></div>
+        </section>
+      </section>
+
+      <footer class="suite-footer"><span>&copy; 2026 Carlos Antonio de Oliveira Piquet.</span><span>Desenvolvido por Carlos Antonio de Oliveira Piquet · <a href="./termos.html">Termos de Uso e Licença</a></span></footer>
+    </main>
+    <div id="notifications" class="notifications" aria-live="polite"></div>
+    <dialog id="qr-modal" class="qr-modal">
+      <form method="dialog" class="qr-modal-card">
+        <div class="stage-head"><div><p class="stage-kicker">EXTRAÇÃO</p><h2>Escolha o PDF que contém o QR</h2></div><button id="close-qr-modal" class="modal-close" value="cancel" aria-label="Fechar">×</button></div>
+        <label class="drop-field" for="single-qr"><input id="single-qr" type="file" accept=".pdf,application/pdf" /><span class="drop-icon">+</span><span class="drop-copy"><strong>Selecionar PDF de origem</strong><span>O leitor procura o primeiro QR encontrado</span></span><span class="drop-type">PDF</span></label>
+        <p id="qr-modal-status" class="stage-help">Aguardando o PDF.</p>
+        <div id="qr-modal-preview-wrap" class="qr-modal-preview hidden"><img id="qr-modal-preview" alt="QR extraído do PDF" /><p id="qr-modal-name"></p></div>
+        <div class="button-row"><button class="secondary-btn" value="cancel">Cancelar</button><button id="confirm-qr" class="primary-btn" type="button" disabled>Usar QR extraído</button></div>
+      </form>
+    </dialog>
+    <dialog id="batch-position-modal" class="qr-modal batch-position-modal">
+      <div class="qr-modal-card">
+        <div class="stage-head"><div><p class="stage-kicker">MODELO DO LOTE</p><h2>Posicione no primeiro documento</h2></div><button id="close-batch-position" class="modal-close" type="button" aria-label="Fechar">×</button></div>
+        <p id="batch-template-name" class="stage-help"></p>
+        <div class="page-nav batch-modal-nav"><button id="batch-preview-previous" type="button" aria-label="Página anterior">←</button><span id="batch-preview-counter">Página 1 de 1</span><button id="batch-preview-next" type="button" aria-label="Próxima página">→</button></div>
+        <div class="pdf-stage batch-preview-stage"><div id="batch-page-wrap" class="pdf-page-wrap"><canvas id="batch-canvas"></canvas><div id="batch-placement" class="qr-placement"><img id="batch-qr-preview" alt="QR extraído do primeiro aluno" /><span class="resize-handle" aria-hidden="true"></span></div></div></div>
+        <p class="stage-help">Arraste o QR e use o ponto verde para ajustar o tamanho. A mesma posição proporcional será aplicada aos demais documentos.</p>
+        <div class="button-row"><button id="confirm-batch-position" class="primary-btn" type="button">Usar esta posição no lote</button></div>
+      </div>
+    </dialog>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <script src="../js/core/qr.js"></script>
+    <script src="../js/extratordeqr.js"></script>
+    <script src="../js/legal.js"></script>
+  </body>
+</html>

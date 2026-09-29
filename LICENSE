@@ -1,0 +1,65 @@
+LICENCA PROPRIETARIA DE USO GRATUITO
+Versao 1.0 - 25 de setembro de 2026
+
+Copyright (c) 2026 Carlos Antonio de Oliveira Piquet.
+Todos os direitos reservados.
+
+1. TITULARIDADE
+
+O codigo-fonte original, a organizacao, o layout, os textos e os demais elementos
+autorais deste projeto pertencem a Carlos Antonio de Oliveira Piquet, ressalvados
+os componentes de terceiros identificados no item 6.
+
+2. PERMISSAO DE USO
+
+O titular concede ao usuario uma licenca gratuita, pessoal, nao exclusiva e
+intransferivel para executar estas ferramentas, por meio de navegador compativel,
+para finalidades licitas de uso pessoal, educacional ou interno.
+
+Essa permissao inclui apenas as copias tecnicas temporarias necessarias para o uso
+normal das ferramentas. Nenhum direito de propriedade e transferido ao usuario.
+
+3. USOS PROIBIDOS
+
+Sem autorizacao previa e escrita do titular, e proibido:
+
+a) copiar ou reproduzir o projeto, no todo ou em parte, fora do uso permitido;
+b) modificar, adaptar, traduzir ou criar obra derivada para distribuicao;
+c) distribuir, publicar, sublicenciar, alugar, vender ou revender o projeto;
+d) incorporar o codigo ou o layout em outro produto, servico ou repositorio;
+e) remover ou alterar avisos de autoria, copyright, licenca ou creditos;
+f) apresentar-se como autor, titular ou desenvolvedor original do projeto;
+g) disponibilizar versao visual ou funcionalmente confundivel com esta ferramenta;
+h) usar o projeto para finalidade ilegal, fraudulenta ou que viole direitos alheios.
+
+As restricoes acima nao afastam excecoes obrigatorias previstas na legislacao
+aplicavel.
+
+4. AUTORIZACOES
+
+Qualquer uso nao previsto nesta licenca depende de autorizacao previa e escrita de
+Carlos Antonio de Oliveira Piquet. O silencio do titular nao significa autorizacao.
+
+5. AUSENCIA DE GARANTIA
+
+As ferramentas sao fornecidas no estado em que se encontram. Na extensao permitida
+pela legislacao, o titular nao garante funcionamento ininterrupto, compatibilidade
+com todo arquivo ou adequacao a finalidade especifica. O usuario deve manter copias
+de seguranca e conferir os arquivos produzidos antes de utiliza-los.
+
+6. COMPONENTES DE TERCEIROS
+
+PDF.js, jsPDF, JSZip, SheetJS e outros componentes externos permanecem sujeitos as
+suas respectivas licencas. Esta licenca proprietaria nao restringe direitos
+concedidos diretamente por esses terceiros nem atribui sua autoria ao titular deste
+projeto.
+
+7. ENCERRAMENTO
+
+O descumprimento desta licenca encerra automaticamente a permissao de uso, sem
+prejuizo das medidas cabiveis previstas na legislacao brasileira.
+
+8. LEGISLACAO
+
+Esta licenca e interpretada conforme as leis da Republica Federativa do Brasil,
+especialmente a Lei 9.609/1998 e a Lei 9.610/1998.

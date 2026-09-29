@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="pt-BR" data-page="presenca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Carlos Antonio de Oliveira Piquet">
+  <meta name="copyright" content="Copyright 2026 Carlos Antonio de Oliveira Piquet">
+  <title>Presença para Moodle | Ferramentas locais</title>
+  <link rel="stylesheet" href="../css/gerador-presenca.css?v=20260926">
+  <link rel="stylesheet" href="../css/legal.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <script src="../js/preferences.js"></script>
+  <script src="../js/theme.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script defer src="../js/core/presenca.js"></script>
+  <script defer src="../js/gerador-presenca.js?v=20260929"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="product-title">
+      <a class="home-mark" href="../index.html" aria-label="Voltar ao início">FL</a>
+      <div>
+        <h1>Criar sessões no Moodle</h1>
+        <p id="statusText">Aguardando planilha</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="btn secondary" href="../index.html">Início</a>
+      <button type="button" class="btn secondary sessions-only-hidden" id="exportSelectedPdfBtn" disabled title="Exportar módulos selecionados em PDF">
+        <i data-lucide="file-stack"></i>
+        <span>PDF selecionados</span>
+      </button>
+      <button type="button" class="btn secondary sessions-only-hidden" id="exportSelectedReportPdfBtn" disabled title="Exportar relatório dos módulos selecionados em PDF">
+        <i data-lucide="file-spreadsheet"></i>
+        <span>Relatório selecionados</span>
+      </button>
+      <button type="button" class="btn primary" id="generateZipBtn" disabled title="Gerar ZIP">
+        <i data-lucide="archive"></i>
+        <span>Baixar ZIP de sessões</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <aside class="panel controls">
+      <form id="settingsForm">
+        <section class="control-section">
+          <h2>Arquivo</h2>
+          <div class="file-actions">
+            <label class="btn secondary file-label" title="Escolher arquivo Excel">
+              <i data-lucide="folder-open"></i>
+              <span>Escolher arquivo</span>
+              <input id="fileInput" type="file" accept=".xlsx,.xls,.xlsm" hidden>
+            </label>
+          </div>
+          <div class="drop-zone" id="dropZone">
+            <i data-lucide="upload-cloud"></i>
+            <strong>Arraste a planilha para criar o ZIP de sessões</strong>
+            <span>XLSX, XLS ou XLSM</span>
+          </div>
+          <label class="check-row">
+            <input id="autoZipInput" type="checkbox" checked>
+            <span>Gerar o ZIP ao carregar a planilha</span>
+          </label>
+          <div class="file-name" id="fileName">Nenhum arquivo carregado</div>
+        </section>
+
+        <details class="control-section advanced-settings">
+          <summary>Ajustar leitura da planilha</summary>
+          <label>
+            <span>Aba de presença</span>
+            <select id="attendanceSheetSelect"></select>
+          </label>
+          <label>
+            <span>Aba de alunos</span>
+            <select id="rosterSheetSelect"></select>
+          </label>
+          <div class="settings-grid">
+            <label>
+              <span>Módulos</span>
+              <input id="moduleRowInput" type="number" min="1" value="6">
+            </label>
+            <label>
+              <span>Datas</span>
+              <input id="dateRowInput" type="number" min="1" value="7">
+            </label>
+            <label>
+              <span>Alunos</span>
+              <input id="firstStudentRowInput" type="number" min="1" value="8">
+            </label>
+            <label>
+              <span>Colunas</span>
+              <input id="maxColumnsInput" type="number" min="20" value="240">
+            </label>
+          </div>
+          <div class="settings-grid">
+            <label>
+              <span>Nome</span>
+              <input id="nameColInput" type="number" min="1" value="2">
+            </label>
+            <label>
+              <span>Matrícula</span>
+              <input id="registrationColInput" type="number" min="1" value="1">
+            </label>
+            <label>
+              <span>Admissão</span>
+              <input id="admissionColInput" type="number" min="1" value="3">
+            </label>
+            <label>
+              <span>Deslig.</span>
+              <input id="leaveColInput" type="number" min="1" value="4">
+            </label>
+            <label>
+              <span>Obs.</span>
+              <input id="observationColInput" type="number" min="1" value="179">
+            </label>
+          </div>
+        </details>
+
+        <section class="control-section">
+          <h2>Configuração das sessões</h2>
+          <label class="sessions-only-hidden">
+            <span>Identificador</span>
+            <select id="identifierFieldSelect">
+              <option value="idnumber" selected>idnumber</option>
+              <option value="email">email</option>
+              <option value="username">username</option>
+            </select>
+          </label>
+          <div class="settings-grid status-grid sessions-only-hidden">
+            <label>
+              <span>0</span>
+              <input id="presentStatusInput" type="text" value="Pr">
+            </label>
+            <label>
+              <span>1</span>
+              <input id="absentStatusInput" type="text" value="Au">
+            </label>
+            <label>
+              <span>Atraso</span>
+              <input id="lateStatusInput" type="text" value="At">
+            </label>
+            <label>
+              <span>Especial</span>
+              <input id="specialStatusInput" type="text" value="Di">
+            </label>
+          </div>
+          <label class="check-row sessions-only-hidden">
+            <input id="specialAsExcusedInput" type="checkbox" checked>
+            <span>Textos especiais como dispensa</span>
+          </label>
+          <label class="check-row sessions-only-hidden">
+            <input id="blankAsPresentInput" type="checkbox" checked>
+            <span>Célula vazia como presença</span>
+          </label>
+          <label class="sessions-only-hidden">
+            <span>Observações</span>
+            <select id="remarksModeSelect">
+              <option value="date" selected>Da data</option>
+              <option value="full">Completa</option>
+              <option value="none">Nenhuma</option>
+            </select>
+          </label>
+          <div class="settings-grid">
+            <label>
+              <span>Delimitador</span>
+              <select id="delimiterSelect">
+                <option value="," selected>,</option>
+                <option value=";">;</option>
+              </select>
+            </label>
+            <label>
+              <span>Ano inicial</span>
+              <input id="initialYearInput" type="number" min="2000" value="2026">
+            </label>
+          </div>
+          <div class="settings-grid">
+            <label>
+              <span>Aula 1 início</span>
+              <input id="sessionStartInput" type="time" value="13:40">
+            </label>
+            <label>
+              <span>Aula 1 fim</span>
+              <input id="sessionEndInput" type="time" value="16:10">
+            </label>
+          </div>
+          <div class="settings-grid">
+            <label>
+              <span>Aula 2 início</span>
+              <input id="session2StartInput" type="time" value="16:30">
+            </label>
+            <label>
+              <span>Aula 2 fim</span>
+              <input id="session2EndInput" type="time" value="19:00">
+            </label>
+          </div>
+          <div class="settings-grid">
+            <label>
+              <span>Aula 3+ início</span>
+              <input id="session3StartInput" type="time" value="19:10">
+            </label>
+            <label>
+              <span>Aula 3+ fim</span>
+              <input id="session3EndInput" type="time" value="21:40">
+            </label>
+          </div>
+          <label>
+            <span>Curso</span>
+            <input id="courseShortnameInput" type="text" placeholder="shortname">
+          </label>
+          <label>
+            <span>Grupo</span>
+            <input id="groupNameInput" type="text" placeholder="opcional">
+          </label>
+        </section>
+
+        <section class="control-section">
+          <h2>Ações</h2>
+          <div class="file-actions">
+            <button type="button" class="btn secondary" id="reanalyzeBtn" disabled title="Reanalisar">
+              <i data-lucide="refresh-cw"></i>
+              <span>Reanalisar</span>
+            </button>
+            <button type="button" class="btn secondary" id="detectLayoutBtn" disabled title="Detectar layout">
+              <i data-lucide="scan-search"></i>
+              <span>Detectar</span>
+            </button>
+            <button type="button" class="btn secondary sessions-only-hidden" id="downloadSessionBtn" disabled title="Baixar sessão selecionada">
+              <i data-lucide="download"></i>
+              <span>CSV sessão</span>
+            </button>
+          </div>
+        </section>
+      </form>
+    </aside>
+
+    <section class="workspace">
+      <section class="metrics" aria-label="Resumo">
+        <div class="metric">
+          <span>Módulos</span>
+          <strong id="moduleCount">0</strong>
+        </div>
+        <div class="metric">
+          <span>Sessões</span>
+          <strong id="sessionCount">0</strong>
+        </div>
+        <div class="metric sessions-only-hidden">
+          <span>Alunos</span>
+          <strong id="studentCount">0</strong>
+        </div>
+        <div class="metric warning">
+          <span>Avisos</span>
+          <strong id="warningCount">0</strong>
+        </div>
+      </section>
+
+      <section class="panel command-panel">
+        <div>
+          <span class="panel-kicker">Módulo ativo</span>
+          <strong id="activeModuleTitle">Nenhum módulo selecionado</strong>
+          <span id="activeModuleMeta">Carregue uma planilha para começar</span>
+        </div>
+        <div class="command-stats sessions-only-hidden" aria-label="Resumo do módulo ativo">
+          <span><strong id="activeSessionTotal">0</strong> sessões</span>
+          <span><strong id="activeRecordTotal">0</strong> registros</span>
+          <span><strong id="activeAbsentTotal">0</strong> faltas</span>
+          <span><strong id="activeSpecialTotal">0</strong> dispensas</span>
+        </div>
+      </section>
+
+      <section class="panel table-panel modules-list">
+        <div class="section-head">
+          <h2>Módulos</h2>
+          <div class="segmented">
+            <button type="button" id="selectAllModulesBtn">Todos</button>
+            <button type="button" id="clearModulesBtn">Limpar</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="check-cell"></th>
+                <th>Módulo</th>
+                <th>Sessões</th>
+                <th>Registros</th>
+                <th>At</th>
+                <th>Faltas</th>
+                <th>Disp.</th>
+              </tr>
+            </thead>
+            <tbody id="modulesTbody">
+              <tr><td colspan="7" class="empty-state">Sem dados</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="split sessions-split">
+        <section class="panel table-panel sessions-list">
+          <div class="section-head">
+            <h2>Sessões</h2>
+            <div class="section-tools">
+              <label class="search-field" title="Filtrar sessões">
+                <i data-lucide="search"></i>
+                <input id="sessionSearchInput" type="search" placeholder="Filtrar sessões">
+              </label>
+              <button type="button" class="btn secondary small sessions-only-hidden" id="downloadModulePdfBtn" disabled title="Exportar prévia das sessões do módulo">
+                <i data-lucide="file-down"></i>
+                <span>PDF módulo</span>
+              </button>
+              <button type="button" class="btn secondary small sessions-only-hidden" id="downloadModuleReportPdfBtn" disabled title="Exportar relatório do módulo em PDF (formato tabela)">
+                <i data-lucide="file-spreadsheet"></i>
+                <span>Relatório módulo</span>
+              </button>
+            </div>
+          </div>
+          <div class="table-wrap compact-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Aula</th>
+                  <th>CSV</th>
+                  <th>Pr</th>
+                  <th>At</th>
+                  <th>Di</th>
+                  <th>Au</th>
+                </tr>
+              </thead>
+              <tbody id="sessionsTbody">
+                <tr><td colspan="7" class="empty-state">Sem módulo</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel table-panel sessions-only-hidden">
+          <div class="section-head">
+            <h2>Prévia</h2>
+            <div class="section-tools">
+              <label class="search-field" title="Filtrar alunos na prévia">
+                <i data-lucide="search"></i>
+                <input id="previewSearchInput" type="search" placeholder="Filtrar prévia">
+              </label>
+              <button type="button" class="btn secondary small sessions-only-hidden" id="downloadSessionPdfBtn" disabled title="Exportar aula selecionada em PDF">
+                <i data-lucide="file-down"></i>
+                <span>PDF aula</span>
+              </button>
+            </div>
+          </div>
+          <div class="table-wrap compact-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Status</th>
+                  <th>Nome</th>
+                  <th>Observação</th>
+                </tr>
+              </thead>
+              <tbody id="previewTbody">
+                <tr><td colspan="4" class="empty-state">Sem sessão</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel table-panel">
+        <div class="section-head">
+          <h2>Avisos</h2>
+        </div>
+        <div id="warningsBox" class="warnings-box">Nenhum aviso</div>
+      </section>
+    </section>
+  </main>
+  <footer class="product-footer">
+    <span>&copy; 2026 Carlos Antonio de Oliveira Piquet. Todos os direitos reservados.</span>
+    <span>Desenvolvido por Carlos Antonio de Oliveira Piquet · <a href="./termos.html">Termos de Uso e Licença</a></span>
+  </footer>
+  <script src="../js/legal.js"></script>
+</body>
+</html>

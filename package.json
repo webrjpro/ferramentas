@@ -1,0 +1,13 @@
+{
+  "name": "ferramentas-locais",
+  "private": true,
+  "version": "2.1.0",
+  "description": "Ferramentas locais para PDF, documentos e CSV Moodle",
+  "scripts": {
+    "test": "node --test",
+    "check": "node tools/check-project.mjs && node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,17 @@
+# Arquivos de usuários e saídas geradas. Nunca publique dados reais.
+*.csv
+*.xlsx
+*.xls
+*.xlsm
+*.pdf
+*.zip
+*.docx
+*.png
+!assets/logo-fl.png
+*.jpg
+*.jpeg
+*.webp
+*.env
+.env.*
+node_modules/
+coverage/

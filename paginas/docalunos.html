@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR" data-page="docalunos">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08111f" />
+    <meta name="author" content="Carlos Antonio de Oliveira Piquet" />
+    <meta name="copyright" content="Copyright 2026 Carlos Antonio de Oliveira Piquet" />
+    <title>Organizador de documentos de alunos</title>
+    <link rel="stylesheet" href="../css/tools-suite.css" />
+    <link rel="stylesheet" href="../css/legal.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
+    <script src="../js/preferences.js"></script>
+    <script src="../js/theme.js"></script>
+  </head>
+  <body>
+    <main class="suite-shell">
+      <header class="suite-header">
+        <div class="suite-topbar">
+          <a class="suite-brand" href="../index.html"><span class="suite-brand-mark">FL</span> Ferramentas locais</a>
+          <nav class="suite-nav" aria-label="Ferramentas">
+            <a href="../index.html">Inicio</a>
+            <a class="active" href="./docalunos.html" aria-current="page">Documentos</a>
+            <a href="./extratordeqr.html">PDF e QR</a>
+          </nav>
+        </div>
+        <div class="suite-intro">
+          <div><h1>Organizar documentos de alunos</h1><p>Uma pasta entra. Cada aluno recebe um ZIP organizado e auditado.</p></div>
+          <span class="suite-badge">Tudo processado localmente</span>
+        </div>
+      </header>
+
+      <section class="suite-workspace">
+        <section id="student-upload-stage" class="tool-stage">
+          <div class="stage-head">
+            <div class="stage-title"><span class="step-number">01</span><div><p class="stage-kicker">PASTA DE ORIGEM</p><h2>Selecionar documentos</h2></div></div>
+          </div>
+          <label id="student-drop-zone" class="drop-field" for="student-folder-input">
+            <input id="student-folder-input" type="file" webkitdirectory directory multiple />
+            <span class="drop-icon">+</span>
+            <span class="drop-copy"><strong>Selecionar pasta dos alunos</strong><span>Estrutura esperada: Pasta / Aluno / documentos</span></span>
+            <span class="drop-type">PASTA</span>
+          </label>
+        </section>
+
+        <section id="student-audit-stage" class="tool-stage hidden" aria-labelledby="student-audit-title">
+          <div class="stage-head">
+            <div class="stage-title"><span class="step-number">02</span><div><p class="stage-kicker">AUDITORIA</p><h2 id="student-audit-title">Revisar organizacao</h2></div></div>
+            <button id="student-reset" class="secondary-btn" type="button">Trocar pasta</button>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card"><strong id="student-count">0</strong><span>Alunos</span></div>
+            <div class="stat-card"><strong id="student-file-count">0</strong><span>Documentos</span></div>
+            <div class="stat-card"><strong id="student-general-count">0</strong><span>Em Geral</span></div>
+            <div class="stat-card"><strong id="student-issue-count">0</strong><span>Alertas</span></div>
+          </div>
+          <div id="student-issues" class="issue-box"></div>
+          <div class="audit-panel">
+            <div class="audit-toolbar"><strong>Alunos reconhecidos</strong><input id="student-search" type="search" placeholder="Buscar aluno" autocomplete="off" /></div>
+            <div id="student-list" class="audit-list"></div>
+          </div>
+          <div class="button-row"><button id="student-generate" class="primary-btn" type="button">Gerar lote organizado <span aria-hidden="true">&#8594;</span></button></div>
+        </section>
+
+        <section id="student-progress-stage" class="tool-stage hidden" aria-live="polite">
+          <div class="stage-head"><div class="stage-title"><span class="step-number">03</span><div><p class="stage-kicker">PROCESSAMENTO</p><h2 id="student-progress-title">Gerando arquivos</h2></div></div><button id="student-cancel" class="danger-btn" type="button">Cancelar</button></div>
+          <div class="progress-panel"><div class="progress-line"><span id="student-progress-detail">Preparando...</span><strong id="student-progress-percent">0%</strong></div><div class="progress-track"><span id="student-progress-bar" class="progress-bar"></span></div></div>
+        </section>
+      </section>
+
+      <footer class="suite-footer"><span>&copy; 2026 Carlos Antonio de Oliveira Piquet.</span><span>Desenvolvido por Carlos Antonio de Oliveira Piquet · <a href="./termos.html">Termos e Licenca</a></span></footer>
+    </main>
+    <div id="student-notifications" class="notifications" aria-live="polite"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+    <script src="../js/core/documentos.js" defer></script>
+    <script src="../js/docalunos.js" defer></script>
+    <script src="../js/legal.js" defer></script>
+  </body>
+</html>

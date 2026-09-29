@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="pt-BR" data-page="principal">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08111f" />
+    <meta name="author" content="Carlos Antonio de Oliveira Piquet" />
+    <meta name="copyright" content="Copyright 2026 Carlos Antonio de Oliveira Piquet" />
+    <title>Ferramentas locais - Compressor de PDF</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/legal.css" />
+    <link rel="stylesheet" href="./css/theme.css" />
+    <script src="./js/preferences.js"></script>
+    <script src="./js/theme.js"></script>
+  </head>
+  <body class="home-page">
+    <main class="shell home-shell">
+      <header class="hero">
+        <div class="topbar">
+          <a class="brand" href="./index.html" aria-label="Pagina inicial">
+            <img class="brand-logo" src="./assets/logo-fl.png" alt="" width="64" height="64" /> Ferramentas locais
+          </a>
+          <div class="header-actions">
+            <nav class="tools-nav" aria-label="Ferramentas">
+              <a class="active" href="./index.html" aria-current="page">Comprimir PDF</a>
+              <a href="./paginas/conversor.html">Planilha para CSV</a>
+            </nav>
+            <div class="theme-control" data-theme-toggle-host></div>
+          </div>
+        </div>
+        <div class="compact-intro">
+          <div>
+            <h1>Comprimir PDF</h1>
+            <p>Escolha os arquivos, defina o tamanho e comprima.</p>
+          </div>
+          <span class="local-badge">Processamento local</span>
+        </div>
+      </header>
+
+      <nav class="quick-tools" aria-label="Outras ferramentas">
+        <a href="./paginas/conversor.html"><span>PLANILHAS</span><strong>CSV para Moodle</strong></a>
+        <a href="./paginas/docalunos.html"><span>DOCUMENTOS</span><strong>Organizar alunos</strong></a>
+        <a href="./paginas/extratordeqr.html"><span>PDF</span><strong>Inserir ou extrair QR</strong></a>
+        <a href="./paginas/gerador-presenca.html"><span>PRESENÇA</span><strong>Gerar CSV e relatórios</strong></a>
+      </nav>
+
+      <section class="workspace" aria-labelledby="workspace-title">
+        <div class="workspace-heading">
+          <div>
+            <h2 id="workspace-title">Escolha seus PDFs</h2>
+          </div>
+          <span id="selection-summary" class="selection-summary">Nenhum arquivo</span>
+        </div>
+
+        <form id="compress-form">
+          <label id="drop-zone" class="drop-zone" for="pdf-input">
+            <input id="pdf-input" type="file" accept=".pdf,application/pdf" multiple required />
+            <span class="upload-icon" aria-hidden="true">+</span>
+            <span class="drop-copy">
+              <strong>Selecionar PDFs</strong>
+              <span>Arraste os arquivos ou clique aqui</span>
+            </span>
+            <span class="drop-local">PDF</span>
+          </label>
+
+          <div id="file-list" class="file-list hidden" aria-live="polite"></div>
+
+          <div id="pdf-options" class="pdf-options hidden">
+            <div class="settings-heading compact-settings-title">
+              <div class="section-title-row">
+                <span class="section-number">02</span>
+                <h2>Configuracao</h2>
+              </div>
+            </div>
+
+            <div class="settings-grid">
+            <label class="field" for="max-mb">
+              <span>Tamanho desejado</span>
+              <span class="input-with-unit">
+                <input id="max-mb" type="number" min="1" max="500" step="0.1" value="15" />
+                <span>MB</span>
+              </span>
+              <small>A meta vale para cada PDF.</small>
+            </label>
+
+            <label class="field" for="quality-profile">
+              <span>Perfil visual</span>
+              <select id="quality-profile">
+                <option value="quality" selected>Maxima nitidez</option>
+                <option value="balanced">Equilibrado</option>
+                <option value="compact">Ultra compacto</option>
+              </select>
+              <small>O motor ajusta cada pagina separadamente.</small>
+            </label>
+            </div>
+
+            <label class="target-toggle">
+              <input id="strict-target" type="checkbox" checked />
+              <span>
+                <strong>Priorizar a meta exata</strong>
+                <small>Pode reduzir mais a resolucao quando a meta for muito agressiva.</small>
+              </span>
+            </label>
+
+            <p class="inline-note"><strong>Aviso:</strong> metas muito baixas podem reduzir a resolucao.</p>
+
+            <div class="actions">
+              <button id="run-btn" class="primary-btn" type="submit">
+                <span>Comprimir agora</span><span aria-hidden="true">&#8594;</span>
+              </button>
+              <button id="cancel-btn" class="secondary-btn hidden" type="button">Cancelar</button>
+            </div>
+          </div>
+        </form>
+
+        <section id="progress-panel" class="progress-panel hidden" aria-live="polite">
+          <div class="progress-topline">
+            <strong id="status">Preparando...</strong>
+            <span id="progress-percent">0%</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span id="progress-bar"></span>
+          </div>
+          <p id="substatus" class="substatus"></p>
+        </section>
+
+        <section id="results" class="results hidden" aria-labelledby="results-title">
+          <div class="results-heading">
+            <div>
+              <p class="step-label">RESULTADO</p>
+              <h2 id="results-title">Compressao concluida</h2>
+            </div>
+            <button id="download-again" class="download-btn" type="button">Baixar novamente</button>
+          </div>
+          <div class="table-wrap">
+            <table id="report" class="report">
+              <thead>
+                <tr>
+                  <th>Arquivo</th>
+                  <th>Original</th>
+                  <th>Final</th>
+                  <th>Reducao</th>
+                  <th>Meta</th>
+                  <th>Processamento</th>
+                </tr>
+              </thead>
+              <tbody id="report-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <footer>
+        <span>&copy; 2026 Carlos Antonio de Oliveira Piquet. Todos os direitos reservados.</span>
+        <span class="footer-links">
+          <span>Desenvolvido por Carlos Antonio de Oliveira Piquet</span>
+          <a href="./paginas/termos.html">Termos de Uso e Licenca</a>
+        </span>
+      </footer>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="./js/core/pdf.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="./js/legal.js"></script>
+  </body>
+</html>
